@@ -1,4 +1,5 @@
 using ApotekHjartat.Order.Api;
+using ApotekHjartat.Order.Api.Configurations;
 using ApotekHjartat.Order.Api.DataTransferObjects.Configuration;
 using ApotekHjartat.Order.Api.Repositories.ApotekHjartat;
 using ApotekHjartat.Order.Api.Services;
@@ -61,5 +62,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.AddGlobalErrorHandler();
 
 app.Run();

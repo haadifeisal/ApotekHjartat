@@ -1,4 +1,5 @@
-﻿using ApotekHjartat.Order.Api.Helpers;
+﻿using ApotekHjartat.Order.Api.Enums;
+using ApotekHjartat.Order.Api.Helpers;
 
 namespace ApotekHjartat.Order.Api.Repositories.ApotekHjartat
 {
@@ -6,7 +7,7 @@ namespace ApotekHjartat.Order.Api.Repositories.ApotekHjartat
     {
         public static void SeedData(ApotekHjartatContext context)
         {
-            if (!context.Orders.Any())
+            if (!context.Products.Any())
             {
                 System.Console.WriteLine("\n\nAdding data - Seeding ...\n\n");
 
@@ -40,29 +41,29 @@ namespace ApotekHjartat.Order.Api.Repositories.ApotekHjartat
                 {
                     OrderId = Guid.NewGuid(),
                     UserId = Guid.Parse("44e4cb84-2b8b-4ee7-8f0c-a77ca815709a"),
+                    Status = (int)Status.Pending,
                     CreatedAt = Helper.ConvertDateTimeToString(DateTime.Now)
                 };
                 context.Orders.Add(order);
-                context.SaveChanges();
 
-                // OrderDetail
-                var orderDetail1 = new OrderDetail
+                // OrderItem
+                var orderItem1 = new OrderItem
                 {
-                    OrderDetailId = Guid.NewGuid(),
+                    OrderItemId = Guid.NewGuid(),
                     OrderId = order.OrderId,
                     ProductId = product1.ProductId,
                     Quantity = 3
                 };
-                context.OrderDetails.Add(orderDetail1);
+                context.OrderItems.Add(orderItem1);
 
-                var orderDetail2 = new OrderDetail
+                var orderItem2 = new OrderItem
                 {
-                    OrderDetailId = Guid.NewGuid(),
+                    OrderItemId = Guid.NewGuid(),
                     OrderId = order.OrderId,
                     ProductId = product3.ProductId,
                     Quantity = 1
                 };
-                context.OrderDetails.Add(orderDetail2);
+                context.OrderItems.Add(orderItem2);
                 context.SaveChanges();
 
                 System.Console.WriteLine("\n\n Seeding Completed!! ...\n\n");

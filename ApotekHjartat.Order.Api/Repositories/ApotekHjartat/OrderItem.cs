@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace ApotekHjartat.Order.Api.Repositories.ApotekHjartat;
 
-public partial class OrderDetail
+public partial class OrderItem
 {
-    public Guid OrderDetailId { get; set; }
+    public Guid OrderItemId { get; set; }
 
     public Guid OrderId { get; set; }
 

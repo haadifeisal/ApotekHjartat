@@ -9,7 +9,7 @@ namespace ApotekHjartat.Order.Api.DataTransferObjects.Configuration
         public MapConfiguration()
         {
             CreateMap<Product, ProductResponseDTO>();
-            CreateMap<OrderDetail, OrderDetailResponseDTO>();
+            CreateMap<OrderItem, OrderItemResponseDTO>();
             CreateMap<Repositories.ApotekHjartat.Order, OrderResponseDTO>();
         }
     }

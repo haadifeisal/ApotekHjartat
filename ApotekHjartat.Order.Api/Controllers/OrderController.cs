@@ -1,4 +1,5 @@
-﻿using ApotekHjartat.Order.Api.DataTransferObjects.ResponseDTOs;
+﻿using ApotekHjartat.Order.Api.DataTransferObjects.RequestDTOs;
+using ApotekHjartat.Order.Api.DataTransferObjects.ResponseDTOs;
 using ApotekHjartat.Order.Api.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -45,6 +46,40 @@ namespace ApotekHjartat.Order.Api.Controllers
             if (order == null)
             {
                 return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<OrderResponseDTO>(order);
+
+            return Ok(mappedResult);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(OrderResponseDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderRequestDTO orderRequestDTO)
+        {
+            var order = await _orderService.CreateOrder(orderRequestDTO);
+
+            if (order == null)
+            {
+                return BadRequest();
+            }
+
+            var mappedResult = _mapper.Map<OrderResponseDTO>(order);
+
+            return Ok(mappedResult);
+        }
+
+        [HttpPut("{orderId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(OrderResponseDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateOrder([FromRoute] Guid orderId, [FromBody] OrderRequestDTO orderRequestDTO)
+        {
+            var order = await _orderService.UpdateOrder(orderId, orderRequestDTO);
+
+            if (order == null)
+            {
+                return BadRequest();
             }
 
             var mappedResult = _mapper.Map<OrderResponseDTO>(order);

@@ -36,6 +36,10 @@ namespace ApotekHjartat.Order.Api.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("createdAt");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<string>("UpdatedAt")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)")
@@ -51,11 +55,11 @@ namespace ApotekHjartat.Order.Api.Migrations
                     b.ToTable("Order", (string)null);
                 });
 
-            modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.OrderDetail", b =>
+            modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.OrderItem", b =>
                 {
-                    b.Property<Guid>("OrderDetailId")
+                    b.Property<Guid>("OrderItemId")
                         .HasColumnType("uuid")
-                        .HasColumnName("orderDetailId");
+                        .HasColumnName("orderItemId");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid")
@@ -69,14 +73,14 @@ namespace ApotekHjartat.Order.Api.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("quantity");
 
-                    b.HasKey("OrderDetailId")
-                        .HasName("OrderDetail_pkey");
+                    b.HasKey("OrderItemId")
+                        .HasName("OrderItem_pkey");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex(new[] { "OrderId" }, "IX_OrderItem_orderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex(new[] { "ProductId" }, "IX_OrderItem_productId");
 
-                    b.ToTable("OrderDetail", (string)null);
+                    b.ToTable("OrderItem", (string)null);
                 });
 
             modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.Product", b =>
@@ -101,19 +105,19 @@ namespace ApotekHjartat.Order.Api.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.OrderDetail", b =>
+            modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.OrderItem", b =>
                 {
                     b.HasOne("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .IsRequired()
-                        .HasConstraintName("OrderDetail_orderId_fkey");
+                        .HasConstraintName("OrderItem_orderId_fkey");
 
                     b.HasOne("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.Product", "Product")
-                        .WithMany("OrderDetails")
+                        .WithMany("OrderItems")
                         .HasForeignKey("ProductId")
                         .IsRequired()
-                        .HasConstraintName("OrderDetail_productId_fkey");
+                        .HasConstraintName("OrderItem_productId_fkey");
 
                     b.Navigation("Order");
 
@@ -122,12 +126,12 @@ namespace ApotekHjartat.Order.Api.Migrations
 
             modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.Order", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ApotekHjartat.Order.Api.Repositories.ApotekHjartat.Product", b =>
                 {
-                    b.Navigation("OrderDetails");
+                    b.Navigation("OrderItems");
                 });
 #pragma warning restore 612, 618
         }

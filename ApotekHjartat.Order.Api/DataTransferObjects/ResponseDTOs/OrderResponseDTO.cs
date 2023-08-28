@@ -8,10 +8,12 @@ namespace ApotekHjartat.Order.Api.DataTransferObjects.ResponseDTOs
 
         public Guid UserId { get; set; }
 
+        public int Status { get; set; }
+
         public string CreatedAt { get; set; }
 
         public string? UpdatedAt { get; set; }
 
-        public ICollection<OrderDetailResponseDTO> OrderDetails { get; set; }
+        public ICollection<OrderItemResponseDTO> OrderItems { get; set; }
     }
 }

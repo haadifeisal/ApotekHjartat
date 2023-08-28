@@ -22,7 +22,8 @@ namespace ApotekHjartat.Order.Api.Migrations
                     orderId = table.Column<Guid>(type: "uuid", nullable: false),
                     userId = table.Column<Guid>(type: "uuid", nullable: false),
                     createdAt = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    updatedAt = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true)
+                    updatedAt = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,37 +44,37 @@ namespace ApotekHjartat.Order.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetail",
+                name: "OrderItem",
                 columns: table => new
                 {
-                    orderDetailId = table.Column<Guid>(type: "uuid", nullable: false),
+                    orderItemId = table.Column<Guid>(type: "uuid", nullable: false),
                     orderId = table.Column<Guid>(type: "uuid", nullable: false),
                     productId = table.Column<Guid>(type: "uuid", nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("OrderDetail_pkey", x => x.orderDetailId);
+                    table.PrimaryKey("OrderItem_pkey", x => x.orderItemId);
                     table.ForeignKey(
-                        name: "OrderDetail_orderId_fkey",
+                        name: "OrderItem_orderId_fkey",
                         column: x => x.orderId,
                         principalTable: "Order",
                         principalColumn: "orderId");
                     table.ForeignKey(
-                        name: "OrderDetail_productId_fkey",
+                        name: "OrderItem_productId_fkey",
                         column: x => x.productId,
                         principalTable: "Product",
                         principalColumn: "productId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_orderId",
-                table: "OrderDetail",
+                name: "IX_OrderItem_orderId",
+                table: "OrderItem",
                 column: "orderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_productId",
-                table: "OrderDetail",
+                name: "IX_OrderItem_productId",
+                table: "OrderItem",
                 column: "productId");
         }
 
@@ -81,7 +82,7 @@ namespace ApotekHjartat.Order.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderDetail");
+                name: "OrderItem");
 
             migrationBuilder.DropTable(
                 name: "Order");

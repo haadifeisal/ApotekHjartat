@@ -17,7 +17,7 @@ public partial class ApotekHjartatContext : DbContext
 
     public virtual DbSet<Order> Orders { get; set; }
 
-    public virtual DbSet<OrderDetail> OrderDetails { get; set; }
+    public virtual DbSet<OrderItem> OrderItems { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -39,34 +39,39 @@ public partial class ApotekHjartatContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasMaxLength(50)
                 .HasColumnName("createdAt");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UpdatedAt)
                 .HasMaxLength(50)
                 .HasColumnName("updatedAt");
             entity.Property(e => e.UserId).HasColumnName("userId");
         });
 
-        modelBuilder.Entity<OrderDetail>(entity =>
+        modelBuilder.Entity<OrderItem>(entity =>
         {
-            entity.HasKey(e => e.OrderDetailId).HasName("OrderDetail_pkey");
+            entity.HasKey(e => e.OrderItemId).HasName("OrderItem_pkey");
 
-            entity.ToTable("OrderDetail");
+            entity.ToTable("OrderItem");
 
-            entity.Property(e => e.OrderDetailId)
+            entity.HasIndex(e => e.OrderId, "IX_OrderItem_orderId");
+
+            entity.HasIndex(e => e.ProductId, "IX_OrderItem_productId");
+
+            entity.Property(e => e.OrderItemId)
                 .ValueGeneratedNever()
-                .HasColumnName("orderDetailId");
+                .HasColumnName("orderItemId");
             entity.Property(e => e.OrderId).HasColumnName("orderId");
             entity.Property(e => e.ProductId).HasColumnName("productId");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
-            entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
+            entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("OrderDetail_orderId_fkey");
+                .HasConstraintName("OrderItem_orderId_fkey");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.OrderDetails)
+            entity.HasOne(d => d.Product).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.ProductId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("OrderDetail_productId_fkey");
+                .HasConstraintName("OrderItem_productId_fkey");
         });
 
         modelBuilder.Entity<Product>(entity =>
