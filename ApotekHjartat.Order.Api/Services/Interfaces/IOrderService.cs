@@ -9,5 +9,6 @@ namespace ApotekHjartat.Order.Api.Services.Interfaces
         Task<Repositories.ApotekHjartat.Order> CreateOrder(OrderRequestDTO orderRequestDTO);
         Task<Repositories.ApotekHjartat.Order> UpdateOrder(Guid orderId, OrderRequestDTO orderRequestDTO);
         Task<Repositories.ApotekHjartat.Order> UpdateOrderStatus(Guid orderId, UpdateOrderStatusRequestDTO updateOrderStatusRequestDTO);
+        Task<bool> DeleteAllOrders();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ApotekHjartat.Order.Api.Exceptions;
 using System.Net;
 using System.Text.Json;
+using InvalidOperationException = ApotekHjartat.Order.Api.Exceptions.InvalidOperationException;
 
 namespace ApotekHjartat.Order.Api.Configurations
 {
@@ -32,7 +33,11 @@ namespace ApotekHjartat.Order.Api.Configurations
 
             var exceptionType = ex.GetType();
 
-            if (exceptionType == typeof(NotFoundException))
+            if (exceptionType == typeof(InvalidOperationException))
+            {
+                status = HttpStatusCode.NoContent;
+            }
+            else if (exceptionType == typeof(NotFoundException))
             {
                 status = HttpStatusCode.NotFound;
             }

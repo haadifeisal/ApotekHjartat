@@ -5,6 +5,8 @@ using ApotekHjartat.Order.Api.Repositories.ApotekHjartat;
 using ApotekHjartat.Order.Api.Services;
 using ApotekHjartat.Order.Api.Services.Interfaces;
 using AutoMapper;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -37,6 +39,8 @@ builder.Services.AddDbContext<ApotekHjartatContext>(options => options.UseNpgsql
 
 builder.Services.AddSingleton(mapper);
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddScoped<IOrderService, OrderService>();
 

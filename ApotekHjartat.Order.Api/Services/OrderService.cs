@@ -6,6 +6,7 @@ using ApotekHjartat.Order.Api.Repositories.ApotekHjartat;
 using ApotekHjartat.Order.Api.Services.Interfaces;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using InvalidOperationException = ApotekHjartat.Order.Api.Exceptions.InvalidOperationException;
 
 namespace ApotekHjartat.Order.Api.Services
 {
@@ -141,6 +142,30 @@ namespace ApotekHjartat.Order.Api.Services
             await _apotekHjartatContext.SaveChangesAsync();
 
             return order;
+        }
+
+        public async Task<bool> DeleteAllOrders()
+        {
+            var orderItems = await _apotekHjartatContext.OrderItems.ToListAsync();
+
+            if (!orderItems.Any())
+            {
+                throw new InvalidOperationException("OrderItems contains no elements.");
+            }
+
+            var orders = await _apotekHjartatContext.Orders.ToListAsync();
+
+            if (!orders.Any())
+            {
+                throw new InvalidOperationException("Orders contains no elements.");
+            }
+
+            _apotekHjartatContext.OrderItems.RemoveRange(orderItems);
+            _apotekHjartatContext.Orders.RemoveRange(orders);
+
+            await _apotekHjartatContext.SaveChangesAsync();
+
+            return true;
         }
 
     }

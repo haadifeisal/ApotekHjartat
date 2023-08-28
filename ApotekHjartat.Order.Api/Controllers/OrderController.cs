@@ -58,6 +58,11 @@ namespace ApotekHjartat.Order.Api.Controllers
         [ProducesResponseType(typeof(OrderResponseDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateOrder([FromBody] OrderRequestDTO orderRequestDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var order = await _orderService.CreateOrder(orderRequestDTO);
 
             if (order == null)
@@ -75,6 +80,11 @@ namespace ApotekHjartat.Order.Api.Controllers
         [ProducesResponseType(typeof(OrderResponseDTO), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateOrder([FromRoute] Guid orderId, [FromBody] OrderRequestDTO orderRequestDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var order = await _orderService.UpdateOrder(orderId, orderRequestDTO);
 
             if (order == null)
@@ -85,6 +95,43 @@ namespace ApotekHjartat.Order.Api.Controllers
             var mappedResult = _mapper.Map<OrderResponseDTO>(order);
 
             return Ok(mappedResult);
+        }
+
+        [HttpPut("status/{orderId}")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(OrderResponseDTO), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateOrderStatus([FromRoute] Guid orderId, [FromBody] UpdateOrderStatusRequestDTO updateOrderStatusRequestDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var order = await _orderService.UpdateOrderStatus(orderId, updateOrderStatusRequestDTO);
+
+            if (order == null)
+            {
+                return BadRequest();
+            }
+
+            var mappedResult = _mapper.Map<OrderResponseDTO>(order);
+
+            return Ok(mappedResult);
+        }
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        public async Task<IActionResult> DeleteAllOrders()
+        {
+            var order = await _orderService.DeleteAllOrders();
+
+            if (!order)
+            {
+                return BadRequest();
+            }
+
+            return Ok(order);
         }
     }
 }
